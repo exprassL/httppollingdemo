@@ -1,0 +1,41 @@
+<meta charset="UTF-8">
+<style>
+	input.btns_on_righttop_html {
+		margin: 10px auto;
+		display: block;
+	}
+	#btn_logout {
+		display: none;
+	}
+</style>
+<input class="btns_on_righttop_html" type="button" onclick="location.reload(true);" value="刷新">
+<input id="btn_login" class="btns_on_righttop_html" type="button" value="登录" >
+<input id="btn_reg" class="btns_on_righttop_html" type="button" value="注册" >
+<input id="btn_logout" class="btns_on_righttop_html" type="button" value="退出" >
+<script type="text/javascript">
+	require([ "domReady", "commonDialog" ], function(domReady, commonDialog) {
+		domReady(function() {
+			$(btn_login).on("click", function() {
+				commonDialog.show("login_dialog", "modules/login.html");
+			});
+			$(btn_reg).on("click", function() {
+				commonDialog.show("register_dialog", "modules/register.html");
+			});
+			$(btn_logout).on("click", function() {
+				$.ajax({
+					url : "/gs/game/system/logout?r=" + Math.random(),
+					type : "GET",
+					dataType : "json",
+					success : function(data) {
+						if(!data.success && data.code == 302) {
+							location.href = "/gs" + data.data + "?r=" + Math.random();
+							return;
+						}
+						alert(data.data);
+						location.href = "/gs/html/main.html?r=" + Math.random();
+					}
+				});
+			});
+		})
+	});
+</script>

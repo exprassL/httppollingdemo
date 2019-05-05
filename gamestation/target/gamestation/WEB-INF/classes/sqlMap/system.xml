@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="system">
+
+	<select id="testConnection" resultType="java.lang.String"
+		databaseId="mysql">
+		select 'mysql'
+	</select>
+
+	<select id="testConnection" resultType="java.lang.String"
+		databaseId="oracle">
+		select 'oracle' from dual
+	</select>
+
+	<select id="getUserByPhoneNum" resultType="com.exp.system.pojo.User"
+		parameterType="java.lang.String" databaseId="mysql">
+		select u.id, u.phone_num
+		phoneNum, u.user_code userCode, u.user_name userName, u.user_password
+		userPwd from exp_users u where u.phone_num = #{phone}
+	</select>
+
+	<insert id="registerBySelf" parameterType="com.exp.system.pojo.User"
+		databaseId="mysql">
+		insert into exp_users (phone_num, user_code, user_name,
+		user_password) values (#{phoneNum}, #{userCode}, #{userName}, #{userPwd})
+	</insert>
+</mapper>

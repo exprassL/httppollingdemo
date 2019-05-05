@@ -1,0 +1,81 @@
+<meta charset="UTF-8">
+<style>
+.register_html {
+	width: 90%;
+	text-align: center;
+}
+
+.register_html input {
+	margin: 0 2%;
+}
+</style>
+<div class="register_html">
+	<p>
+		<input type="text" name="phone" placeholder="手机号，仅用作标识"
+			value="13000000000">
+	</p>
+	<p>
+<input type="text" name="name" placeholder="用户名，英文，20字符以内" value="123">
+	</p>
+	<p>
+	<input type="password" name="password" placeholder="请输入密码" value="1234">
+	</p>
+	<p>
+	<input type="password" name="password_2" placeholder="请再次输入密码"
+		value="1234">
+	</p>
+	</div>
+<div class="register_html">
+	<input type="button" class="confirm" value="注册"> <input
+		type="button" class="cancel" value="关闭">
+</div>
+<script type="text/javascript">
+	// 确认回调，此处执行登录
+	function confirm() {
+		var phone = $("input[name=phone]").val();
+		if (phone == "") {
+			alert("请输入手机号先...");
+			return false;
+		}
+		var name = $("input[name=name]").val();
+		if (name == "") {
+			alert("请输入用户名先...");
+			return false;
+		}
+		var pwd = $("input[name=password]").val();
+		if (pwd == "") {
+			alert("密码不能为空");
+			return false;
+		}
+		var pwd2 = $("input[name=password_2]").val();
+		if (pwd2 != pwd) {
+			alert("两次输入密码不一致");
+			return false;
+		}
+		require([ "rsaencrypter" ], function(rsaencrypter) {
+			$("input[name=password]").val(pwd = rsaencrypter.encrypt(pwd));
+			$("input[name=password_2]").val(pwd2 = rsaencrypter.encrypt(pwd2));
+			$.ajax({
+				url : "/gs/game/system/register?r=" + Math.random(),
+				type : "POST",
+				data : {
+					"phone" : phone,
+					"name" : name,
+					"password" : pwd,
+					"password2" : pwd2
+				},
+				dataType : "json",
+				success : function(data) {
+					if (data.success) {
+						alert(data.msg);
+					} else {
+						alert(data.cause);
+					}
+				}
+			});
+		});
+		return true;
+	}
+
+	// 取消回调，此处不做任何操作
+</script>

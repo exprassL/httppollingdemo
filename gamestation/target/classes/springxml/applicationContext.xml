@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx 
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        ">
+
+	<!-- 扫描Job Bean -->
+	<context:component-scan base-package="com.exp.animalchecker.scheduler.AnimalJob" />
+
+
+	<!-- Spring Task -->
+<!-- 	<task:annotation-driven scheduler="scheduler" -->
+<!-- 		mode="proxy" /> -->
+<!-- 	<task:scheduler id="scheduler" pool-size="10" /> -->
+
+
+	<!-- 开启事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		p:dataSource-ref="c3p0dataSource" />
+
+
+	<!-- 配置项读取 -->
+	<bean id="propertyConfigurer"
+		class="com.exp.common.util.ExpPropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+				<value>classpath:log4j.properties</value>
+				<value>classpath:sysconf.properties</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- MyBatis -->
+	<bean id="databaseIdProvider" class="org.apache.ibatis.mapping.VendorDatabaseIdProvider">
+		<property name="properties">
+			<props>
+				<prop key="Oracle">oracle</prop>
+				<prop key="MySQL">mysql</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="c3p0dataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
+		<property name="databaseIdProvider" ref="databaseIdProvider"></property>
+	</bean>
+
+	<bean id="c3p0dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${db.driver}"></property>
+		<property name="jdbcUrl" value="${db.url}"></property>
+		<property name="user" value="${db.user}"></property>
+		<property name="password" value="${db.pwd}"></property>
+		<property name="acquireIncrement" value="5"></property>
+		<property name="initialPoolSize" value="10"></property>
+		<property name="maxIdleTime" value="600"></property>
+		<property name="maxPoolSize" value="50"></property>
+		<property name="minPoolSize" value="10"></property>
+
+		<property name="acquireRetryDelay" value="1000"></property>
+		<property name="acquireRetryAttempts" value="60"></property>
+		<property name="breakAfterAcquireFailure" value="false"></property>
+	</bean>
+
+</beans>

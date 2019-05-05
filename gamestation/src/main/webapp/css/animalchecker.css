@@ -1,0 +1,43 @@
+@CHARSET "UTF-8";
+
+#box {
+	display: -webkit-flex;
+	flex-flow: row wrap-reverse;
+	justify-content: space-around;
+	align-items: center;
+	align-content: center;
+	background: #ccc;
+/* 	border: 1px solid #cca; */
+	width: 90%;
+/* 	border: 1px solid red; */
+}
+
+#box>div {
+	border: 1px solid #cca;
+	text-align: center;
+	font-size: 200%;
+	border: thin solid #fff;
+}
+
+p.hint {
+	text-align: center;
+	display: none;
+}
+
+#box>div.OFFENSE, p.hint>span.OFFENSE {
+	background: #f77;
+}
+
+#box>div.DEFENSE, p.hint>span.DEFENSE {
+	background: #77f;
+}
+
+#box>div.hidden {
+	background-color: yellowgreen;
+}
+
+p.hint>span {
+	display: inline-block;
+	border-radius: 50%;
+	padding: 1%;
+}

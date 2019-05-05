@@ -1,0 +1,22 @@
+<meta charset="UTF-8">
+<style>
+.start_html {
+	text-align: center;
+	background: rgba(204, 204, 204, 0.8);
+	font-size: 2em;
+	padding: 0.1em 0.2em;
+	border-radius: 0.3em;
+}
+</style>
+<div class="start_html confirm">开始游戏</div>
+<script type="text/javascript">
+	// 确认回调，此处执行登录
+	function confirm() {
+		require(["animalchecker"], function(animalchecker) {
+			animalchecker.prepare();
+		})
+		return true;
+	}
+
+	// 取消回调，此处不做任何操作
+</script>
