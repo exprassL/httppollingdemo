@@ -1,2 +1,2 @@
-# httppollingdemo
-a demo for processing http-polling.
+# HTTP轮询实现服务端推送DEMO
+斗兽棋小游戏，用HTTP轮询模拟服务端推送实现
